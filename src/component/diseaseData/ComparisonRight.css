@@ -1,0 +1,27 @@
+.data-section {
+    background: rgb(255,255,255);
+    height: auto;
+}
+
+
+p {
+    color: black;
+}
+
+
+
+.data-section[active-state='true'][theme-value='Light']  {
+    background: rgb(255,255,255);
+    height: auto;
+
+}
+
+.data-section #right-display-state-data {
+    width: 40vw;
+} 
+
+
+#right-comparison-dropdowns{
+    display: flex;
+    justify-content: space-around;
+}

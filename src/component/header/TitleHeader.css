@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+}
+
+
+#header-container {
+    display: flex;
+    background: white;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#header-container h1 {
+    color: black;
+    padding: .5em;
+
+}
+
+#disease_list {
+    color: black;
+    font-size: 1.25em;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 9px;
+    /* border: 1px red solid; */
+    width: auto;
+    display: flex; 
+    justify-content: space-between; 
+}
+
+.virus {
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 3px #131313 solid;
+    color: #131313;
+    border-radius: 10px;
+    vertical-align: top;
+    display: inline-block;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.virus:hover {
+    border: 3px #5ecc62 solid;
+    color: #5ecc62;
+    cursor: pointer;
+    box-shadow: #131313 1px 1px;
+}
+
+.virus:active {
+    border: 3px #5ecc62 solid;
+    color: #5ecc62;
+    cursor: pointer;
+    box-shadow: #131313 1px 1px;
+}
+
+#selected-disease {
+    color: blue;
+    outline: none;
+  }
+
+
+#diseases {
+    padding: .7rem;
+    border: 3px #131313 solid;
+    color: #131313;
+    border-radius: 10px;
+    vertical-align: top;
+    display: inline-block;
+    font-weight: 700;
+    font-size: large;
+    margin-top: 9px;
+}
+
+#home {
+    color: black;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+.page-scroll:hover {
+    color: black;
+    cursor: pointer;
+}
+
+

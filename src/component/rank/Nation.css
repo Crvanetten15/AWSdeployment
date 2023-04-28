@@ -1,0 +1,9 @@
+#doughnut-chart[stack-display="true"]{
+    width: 32vw ;
+}
+
+#doughnut-chart[stack-display="false"]{
+    margin-top: 2.5em;
+    height: 20vh;
+    width: 25vw;
+}

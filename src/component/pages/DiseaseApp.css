@@ -1,0 +1,29 @@
+#main-container{
+    display: flex;
+    background: rgb(255,255,255);
+    margin-top: 10em;
+}
+
+#map-nation[stack-display="true"] {
+    display: block;
+    padding-left: 15px;
+    width: 100vw;
+}
+
+#map-nation[stack-display="false"] {
+    display: flex;
+
+}
+
+#state-view {
+    display: flex;
+    margin-bottom: 2em;
+}
+
+#piechart-topstates{
+    display: flex;
+}
+
+#comparison-container{
+    display: flex;
+}

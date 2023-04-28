@@ -1,0 +1,34 @@
+#cases-chart{
+    margin: 0 auto;
+    width: auto; 
+    height: 40em;
+ 
+}
+#cases-chart > * {
+    margin: 0 auto;
+    width: auto; 
+    height: 40em;
+}
+
+#prediction-button {
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 3px #131313 solid;
+    color: #131313;
+    border-radius: 10px;
+    vertical-align: top;
+    display: inline-block;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+#chart_center{
+    text-align: center;
+}
+
+#prediction-button:hover {
+    border: 3px #5ecc62 solid;
+    color: #5ecc62;
+    cursor: pointer;
+    box-shadow: #131313 1px 1px;
+}

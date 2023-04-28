@@ -1,0 +1,29 @@
+.data-section {
+    background: rgb(255,255,255);
+    /* width: auto; */
+    height: auto;
+}
+
+
+p{
+    color: black;
+}
+
+.data-section #left-display-state-data[scroll-value="true"] {
+    height: 26em;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    width: 50vw;
+} 
+
+.data-section #left-display-state-data[scroll-value="false"] {
+     width: 42em;
+     width: 50vw;
+} 
+
+#year-selector{
+    display: flex;
+    justify-content: space-around;
+}
+
+

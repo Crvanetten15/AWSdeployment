@@ -1,0 +1,20 @@
+.data-section{
+    background: rgb(255,255,255);
+    height: auto;
+    margin-left: 5%;
+}
+
+p {
+    color: black;
+}
+
+.data-section #left-display-state-data {
+     width: 40vw;
+
+} 
+
+
+#left-comparison-dropdowns{
+    display: flex;
+    justify-content: space-around;
+}

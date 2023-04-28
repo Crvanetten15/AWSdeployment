@@ -1,0 +1,16 @@
+#table-caption{
+    font-size: 1.5rem !important;
+    font-weight: bold;
+}
+
+
+.table[stack-display="false"]{
+    width: 25vw;
+    height: 25em;
+}
+
+
+.table[stack-display="true"]{
+    width: 40vw;
+    height: 30em;
+}
