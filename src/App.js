@@ -19,13 +19,13 @@ const data = {
 
 
 export default function App() {
-  // axios.post(url, data)
-  // .then((response) => {
-  //   console.log(response.data);
-  // })
-  // .catch((error) => {
-  //   console.error(error);
-  // });
+  axios.post(url, data)
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
   return (
     <>
