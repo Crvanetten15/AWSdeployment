@@ -4,6 +4,7 @@ import { AppContext } from "../pages/DiseaseApp";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
 import Axios from "axios";
+const url = "https://gfn1a5n8m7.execute-api.us-east-2.amazonaws.com/example";
 
 export default function Prediction() {
   const { diseaseType } = useContext(AppContext);
@@ -14,27 +15,36 @@ export default function Prediction() {
   const [displayPredictions, setDisplayPredictions] = useState(false);
 
   useEffect(() => {
+    const data = {
+      query_data: {
+        table: "disease_weekly_totals",
+        disease: diseaseType,
+        week: null,
+        year: "2023",
+        state: null,
+      },
+      function: {
+        number: 3,
+      },
+    };
+
     diseaseType &&
-      Axios.get(
-        "http://localhost:3001/getCurrentYear?diseaseType=" + diseaseType
-      ).then((response) => {
+      Axios.post(url, data).then((response) => {
+        // console.log(response.data);
         setDate([]);
         setCases([]);
         setFutureDates([]);
         for (let j = 0; j < response.data.length; j++) {
-          setDate((prevData) => [...prevData, response.data[j].week + " "]);
-          setCases((prevData) => [
-            ...prevData,
-            response.data[j].CasesInWeek + " ",
-          ]);
+          setDate((prevData) => [...prevData, response.data[j][2] + " "]);
+          setCases((prevData) => [...prevData, response.data[j][3] + " "]);
           j > 0 && setFutureDates((prevData) => [...prevData, null + " "]);
         }
         setPredictions([
-          response.data[response.data.length - 1].CasesInWeek,
-          response.data[response.data.length - 5].CasesInWeek,
-          response.data[response.data.length - 7].CasesInWeek,
-          response.data[response.data.length - 3].CasesInWeek,
-          response.data[response.data.length - 2].CasesInWeek,
+          response.data[response.data.length - 1][3],
+          response.data[response.data.length - 5][3],
+          response.data[response.data.length - 7][3],
+          response.data[response.data.length - 3][3],
+          response.data[response.data.length - 2][3],
         ]);
       });
   }, [diseaseType]);

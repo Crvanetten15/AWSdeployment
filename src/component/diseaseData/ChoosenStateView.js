@@ -4,6 +4,9 @@ import { AppContext } from "../pages/DiseaseApp";
 import { motion, AnimatePresence } from "framer-motion";
 import { Line } from "react-chartjs-2";
 import Axios from "axios";
+
+const url = "https://gfn1a5n8m7.execute-api.us-east-2.amazonaws.com/example";
+
 export default function ChoosenStateView() {
   const { choosenState, setChoosenState, diseaseType, compareStates } =
     useContext(AppContext);
@@ -78,34 +81,35 @@ export default function ChoosenStateView() {
 
       serverStateName = states.find((state) => state[1] === choosenState.id)[0];
 
+      const data = {
+        query_data: {
+          table: "weekly_data",
+          disease: diseaseType,
+          week: null,
+          year: year,
+          state: serverStateName,
+        },
+        function: {
+          number: 4,
+        },
+      };
       diseaseType &&
         serverStateName &&
         year &&
-        Axios.get(
-          "http://localhost:3001/getTotalNonGrowing?diseaseType=" +
-            diseaseType +
-            "&choosenState=" +
-            serverStateName +
-            "&year=" +
-            year
-        ).then((response) => {
+        Axios.post(url, data).then((response) => {
           setDate([]);
           setDeaths([]);
           setCases([]);
+          // console.log(response.data);
           for (let j = 0; j < response.data.length; j++) {
-            if (response.data[j].state === serverStateName) {
-              setDate((prevData) => [...prevData, response.data[j].week + " "]);
-              diseaseType === "covid"
-                ? setDeaths((prevData) => [
-                    ...prevData,
-                    response.data[j].disease_deaths + " ",
-                  ])
-                : setDeaths([]);
-              setCases((prevData) => [
-                ...prevData,
-                response.data[j].disease_cases + " ",
-              ]);
-            }
+            setDate((prevData) => [...prevData, response.data[j][2] + " "]);
+            diseaseType === "covid"
+              ? setDeaths((prevData) => [
+                  ...prevData,
+                  response.data[j][4] + " ",
+                ])
+              : setDeaths([]);
+            setCases((prevData) => [...prevData, response.data[j][3] + " "]);
           }
         });
     } else {

@@ -13,6 +13,7 @@ import Prediction from "../predictions/Prediction";
 import Axios from "axios";
 import * as d3 from "d3";
 import StateRanking from "../rank/StateRanking";
+const url = "https://gfn1a5n8m7.execute-api.us-east-2.amazonaws.com/example";
 
 export const AppContext = React.createContext();
 export default function DiseaseApp() {
@@ -87,21 +88,47 @@ export default function DiseaseApp() {
   ];
 
   useEffect(() => {
-    Axios.get(
-      "http://localhost:3001/getMapColorCode?diseaseType=" + diseaseType
-    ).then((response) => {
+    const data = {
+      query_data: {
+        table: "weekly_data",
+        disease: diseaseType,
+        week: "12",
+        year: "2023",
+        state: null,
+      },
+      function: {
+        number: 5,
+      },
+    };
+
+    Axios.post(url, data).then((response) => {
+      console.log(response.data);
       response.data.sort((a, b) => b.disease_cases - a.disease_cases);
       for (let j = 0; j < response.data.length; j++) {
         const stateData = response.data[j];
-        stateData.state = statesAbbre.find(
-          (pair) => pair[0] === stateData.state
-        )
-          ? statesAbbre.find((pair) => pair[0] === stateData.state)[1]
+        stateData[5] = statesAbbre.find((pair) => pair[0] === stateData[5])
+          ? statesAbbre.find((pair) => pair[0] === stateData[5])[1]
           : null;
         setStatesData((prevData) => [...prevData, stateData]);
-        setHighestDiseaseCase(response.data[0].disease_cases);
+        setHighestDiseaseCase(response.data[0][3]);
       }
     });
+
+    //   Axios.get(
+    //     "http://localhost:3001/getMapColorCode?diseaseType=" + diseaseType
+    //   ).then((response) => {
+    //     response.data.sort((a, b) => b.disease_cases - a.disease_cases);
+    //     for (let j = 0; j < response.data.length; j++) {
+    //       const stateData = response.data[j];
+    //       stateData.state = statesAbbre.find(
+    //         (pair) => pair[0] === stateData.state
+    //       )
+    //         ? statesAbbre.find((pair) => pair[0] === stateData.state)[1]
+    //         : null;
+    //       setStatesData((prevData) => [...prevData, stateData]);
+    //       setHighestDiseaseCase(response.data[0].disease_cases);
+    //     }
+    //   });
   }, [diseaseType]);
 
   const ChoosenStatePicker = (currState) => {
@@ -121,27 +148,25 @@ export default function DiseaseApp() {
     );
 
     //changing state colors
-
+    console.log(highestDiseaseCase);
     if (changeMapColor) {
       statesData.map((stateData) => {
-        const state = states.find(
-          (stateElem) => stateElem.id === stateData.state
-        );
+        const state = states.find((stateElem) => stateElem.id === stateData[5]);
         const stateTitle = stateTitles.find(
-          (stateElem) => stateElem.id === stateData.state
+          (stateElem) => stateElem.id === stateData[5]
         );
 
-        stateData.disease_cases < highestDiseaseCase / 5
+        stateData[3] < highestDiseaseCase / 5
           ? d3.select(state).style("fill", "#dfe6ec")
-          : stateData.disease_cases < (highestDiseaseCase / 5) * 2
+          : stateData[3] < (highestDiseaseCase / 5) * 2
           ? d3.select(state).style("fill", "#afc1d0")
-          : stateData.disease_cases < (highestDiseaseCase / 5) * 3
+          : stateData[3] < (highestDiseaseCase / 5) * 3
           ? d3.select(state).style("fill", "#5e83a1")
-          : stateData.disease_cases < (highestDiseaseCase / 5) * 4
+          : stateData[3] < (highestDiseaseCase / 5) * 4
           ? d3.select(state).style("fill", "#3e566a")
           : d3.select(state).style("fill", "#263440");
 
-        stateData.disease_cases < highestDiseaseCase / 5
+        stateData[3] < highestDiseaseCase / 5
           ? d3.select(stateTitle).style("fill", "black")
           : d3.select(stateTitle).style("fill", "white");
       });

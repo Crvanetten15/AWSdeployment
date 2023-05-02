@@ -3,25 +3,35 @@ import Axios from "axios";
 import { motion } from "framer-motion";
 import { AppContext } from "../pages/DiseaseApp";
 import "./StateRanking.css";
+const url = "https://gfn1a5n8m7.execute-api.us-east-2.amazonaws.com/example";
+
 export default function StateRanking() {
   const { diseaseType, rankingPage, stackedDisplay } = useContext(AppContext);
   const [states, setStates] = useState([]);
   const [cases, setCases] = useState([]);
 
   useEffect(() => {
-    Axios.get(
-      "http://127.0.0.1:3001/getTopStates?diseaseType=" +
-        diseaseType.toLowerCase()
-    ).then((response) => {
+    const data = {
+      query_data: {
+        table: "highest_weekly_data",
+        disease: diseaseType,
+        week: "12",
+        year: "2023",
+        state: null,
+      },
+      function: {
+        number: 5,
+      },
+    };
+
+    Axios.post(url, data).then((response) => {
+      // console.log(response.data);
       setStates([]);
       setCases([]);
-      response.data.sort((a, b) => b.disease_cases - a.disease_cases);
+      response.data.sort((a, b) => b[4] - a[4]);
       for (let j = 0; j < response.data.length; j++) {
-        setStates((prevData) => [...prevData, response.data[j].state + " "]);
-        setCases((prevData) => [
-          ...prevData,
-          response.data[j].disease_cases + " ",
-        ]);
+        setStates((prevData) => [...prevData, response.data[j][3] + " "]);
+        setCases((prevData) => [...prevData, response.data[j][4] + " "]);
       }
     });
   }, [diseaseType]);

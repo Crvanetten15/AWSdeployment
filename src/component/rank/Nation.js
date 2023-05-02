@@ -5,6 +5,7 @@ import { AppContext } from "../pages/DiseaseApp";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import Axios from "axios";
+const url = "https://gfn1a5n8m7.execute-api.us-east-2.amazonaws.com/example";
 
 export default function Nation() {
   const { rankingPage, diseaseType, stackedDisplay } = useContext(AppContext);
@@ -18,33 +19,44 @@ export default function Nation() {
   const [tuberculosisTotals, setTuberculosisTotals] = useState(0);
 
   useEffect(() => {
-    Axios.get(
-      "http://127.0.0.1:3001/getCurrentWeekTotal?diseaseType=" + diseaseType
-    ).then((response) => {
+    const data = {
+      query_data: {
+        table: "disease_weekly_totals",
+        disease: null,
+        week: "12",
+        year: "2023",
+        state: null,
+      },
+      function: {
+        number: 2,
+      },
+    };
+
+    Axios.post(url, data).then((response) => {
+      // console.log(response.data);
       for (let j = 0; j < response.data.length; j++) {
-        response.data[j].disease === "covid" &&
-          setCovidTotals(response.data[j].CasesInWeek);
+        response.data[j][0] === "covid" && setCovidTotals(response.data[j][3]);
 
-        response.data[j].disease === "campylobacteriosis" &&
-          setCampylobacteriosisTotals(response.data[j].CasesInWeek);
+        response.data[j][0] === "campylobacteriosis" &&
+          setCampylobacteriosisTotals(response.data[j][3]);
 
-        response.data[j].disease === "chlamydia" &&
-          setChlamydiaTotals(response.data[j].CasesInWeek);
+        response.data[j][0] === "chlamydia" &&
+          setChlamydiaTotals(response.data[j][3]);
 
-        response.data[j].disease === "gonorrhea" &&
-          setGonorrheaTotals(response.data[j].CasesInWeek);
+        response.data[j][0] === "gonorrhea" &&
+          setGonorrheaTotals(response.data[j][3]);
 
-        response.data[j].disease === "malaria" &&
-          setMalariaTotals(response.data[j].CasesInWeek);
+        response.data[j][0] === "malaria" &&
+          setMalariaTotals(response.data[j][3]);
 
-        response.data[j].disease === "pneumococcal" &&
-          setPneumoccalTotals(response.data[j].CasesInWeek);
+        response.data[j][0] === "pneumococcal" &&
+          setPneumoccalTotals(response.data[j][3]);
 
-        response.data[j].disease === "syphilis" &&
-          setSyphilisTotals(response.data[j].CasesInWeek);
+        response.data[j][0] === "syphilis" &&
+          setSyphilisTotals(response.data[j][3]);
 
-        response.data[j].disease === "tuberculosis" &&
-          setTuberculosisTotals(response.data[j].CasesInWeek);
+        response.data[j][0] === "tuberculosis" &&
+          setTuberculosisTotals(response.data[j][3]);
       }
     });
   }, []);
