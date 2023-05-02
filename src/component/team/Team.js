@@ -24,9 +24,6 @@ export default function Team() {
             <a className="link-1" href="#">
               Home
             </a>
-            <a href="#">Team</a>
-            <a href="#">Contact</a>
-            <a href="#">About</a>
           </p>
 
           <p>

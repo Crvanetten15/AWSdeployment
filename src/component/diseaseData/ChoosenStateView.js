@@ -21,7 +21,8 @@ export default function ChoosenStateView() {
   const [scroll, setScroll] = useState("true");
   const [year, setYear] = useState("2023");
   const [riskLevel, setRiskLevel] = useState(null);
-  const [riskNum, setRiskNum] = useState(0);
+  const [riskNum, setRiskNum] = useState([]);
+  const [populationArr, setpopulationArr] = useState([]);
   const [riskColor, setRiskColor] = useState(null);
   const [predictions, setPredictions] = useState([]);
   const [futureDates, setFutureDates] = useState([]);
@@ -82,11 +83,37 @@ export default function ChoosenStateView() {
     ["Wyoming", "WY"],
   ];
 
+  let population_division = 1
+  const population = {
+    query_data: {
+      table: "population_data",
+      disease: null,
+      week: null,
+      year: null,
+      state: null,
+    },
+    function: {
+      number: 1,
+    },
+  };
+  Axios.post(url, population).then((response) => {
+    for (let x = 0;x < response.data.length;x++) {
+
+    }
+  });
+
   useEffect(() => {
     let serverStateName;
 
     compareStates ? setChoosenState(null) : setChoosenState(choosenState);
 
+
+    // if (response.data[x][0] === serverStateName) {
+    //   let pup  = response.data[x][1]
+    //   population_division = pup
+    //   console.log(pup + " POPULATION")
+    //   break;
+    // }
     riskNum === 20
       ? setRiskColor("red")
       : riskNum === 10
@@ -97,10 +124,30 @@ export default function ChoosenStateView() {
       ? setRiskLevel("High")
       : riskNum === 10
       ? setRiskLevel("Medium")
-      : setRiskLevel("Low");
+      : setRiskLevel("Low");    
+
+      let populations;
+      const population = {
+        query_data: {
+          table: "population_data",
+          disease: null,
+          week: null,
+          year: null,
+          state: null,
+        },
+        function: {
+          number: 1,
+        },
+      };
+      Axios.post(url, population).then((response) => {
+          populations  = response.data
+          setpopulationArr(populations)
+      });
     if (choosenState) {
       // diseaseType === "covid" ? setScroll("true") : setScroll("false");
 
+
+      
       serverStateName = states.find((state) => state[1] === choosenState.id)[0];
       // setYear(null);
       // setCases([]);
@@ -154,7 +201,19 @@ export default function ChoosenStateView() {
           setDate([]);
           setDeaths([]);
           setCases([]);
-          // console.log(response.data);
+          let index = 0
+          for (let j = 0; j < populationArr.length; j++){
+            if (populationArr[j][0] === serverStateName) {
+                console.log(populationArr[j])
+                console.log(serverStateName)
+                index = j
+            }
+          }
+          console.log(response.data[response.data.length - 1][3] + "TOTAL");
+          let x = (response.data[response.data.length - 1][3] / populationArr[index][1]) * 100000
+          console.log(x + " RETURN ")
+          setRiskNum([x])
+
           for (let j = 0; j < response.data.length; j++) {
             setDate((prevData) => [...prevData, response.data[j][2] + " "]);
             diseaseType === "covid"
@@ -164,6 +223,7 @@ export default function ChoosenStateView() {
                 ])
               : setDeaths([]);
             setCases((prevData) => [...prevData, response.data[j][3] + " "]);
+            // console.log(cases)
           }
         });
     } else {
@@ -172,6 +232,21 @@ export default function ChoosenStateView() {
       setDate([]);
     }
   }, [choosenState, compareStates, diseaseType, year, changeMapColor]);
+
+
+  useEffect(() => {
+    if (riskNum >= 20){
+      setRiskColor("red")
+      setRiskLevel("High")
+    } else if (riskNum >= 10 && !(riskNum >= 20)) {
+      setRiskColor("orange")
+      setRiskLevel("Medium")
+    } else {
+      setRiskColor("yellow")
+      setRiskLevel("Low")
+    }
+    // console.log('Data has changed:', riskNum);
+  }, [riskNum]);
 
   return (
     <>
@@ -317,7 +392,7 @@ export default function ChoosenStateView() {
                     datasets: [
                       {
                         id: 1,
-                        label: "State Risk Level",
+                        label: "# of Infected per 100,000",
                         data: [null, null, riskNum],
                         fill: true,
                         pointRadius: 0.5,
@@ -354,7 +429,7 @@ export default function ChoosenStateView() {
                     },
                   }}
                 />
-                <h2>{riskLevel}</h2>
+                <h2>Risk Assessment Level : {riskLevel}</h2>
               </div>
             </div>
           </motion.div>

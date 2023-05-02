@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./TitleHeader.css";
 import { AppContext } from "../pages/DiseaseApp";
 export default function TitleHeader() {
@@ -10,8 +10,8 @@ export default function TitleHeader() {
     setRankingPage,
   } = useContext(AppContext);
 
-  const [selectedDisease, setSelectedDisease] = useState("malaria");
-
+  const [selectedDisease, setSelectedDisease] = useState("covid");
+  
   function handleHome() {
     setChoosenState(null);
     setUSMainMap(true);
@@ -24,10 +24,22 @@ export default function TitleHeader() {
     setUSMainMap(false);
     setRankingPage(false);
   }
+  function onLoad(){
+    setDiseaseType("covid");
+    setSelectedDisease("covid");
+  }
+
   function handleDiseaseSelection(e) {
     setDiseaseType(e.target.dataset.value);
     setSelectedDisease(e.target.dataset.value);
   }
+
+  // eslint-disable-next-line no-undef
+ useEffect(
+    onLoad, // <- function that will run on every dependency update
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [] // <-- empty dependency array
+  ) 
   return (
     <nav id="menu" className="navbar navbar-default navbar-fixed-top">
       <div className="container">
