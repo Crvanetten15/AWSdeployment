@@ -23,6 +23,9 @@ export default function ChoosenStateView() {
   const [riskLevel, setRiskLevel] = useState(null);
   const [riskNum, setRiskNum] = useState(0);
   const [riskColor, setRiskColor] = useState(null);
+  const [predictions, setPredictions] = useState([]);
+  const [futureDates, setFutureDates] = useState([]);
+  const [displayPredictions, setDisplayPredictions] = useState(false);
 
   const states = [
     ["Alabama", "AL"],
@@ -117,20 +120,19 @@ export default function ChoosenStateView() {
 
       Axios.post(url, data2).then((response) => {
         console.log(response.data);
-        // setDate([]);
-        // setDeaths([]);
-        // setCases([]);
-        // // console.log(response.data);
-        // for (let j = 0; j < response.data.length; j++) {
-        //   setDate((prevData) => [...prevData, response.data[j][2] + " "]);
-        //   diseaseType === "covid"
-        //     ? setDeaths((prevData) => [
-        //         ...prevData,
-        //         response.data[j][4] + " ",
-        //       ])
-        //     : setDeaths([]);
-        //   setCases((prevData) => [...prevData, response.data[j][3] + " "]);
-        // }
+        setFutureDates([]);
+        for (let j = 0; j < 14; j++) {
+          j > 1 && setFutureDates((prevData) => [...prevData, null + " "]);
+        }
+        for (let j = 0; j < response.data.length; j++) {
+          if (serverStateName === response.data[j][2]) {
+            //500 is too low to show up on charts
+            // setPredictions([
+            //   response.data[response.data.length - 1][3],
+            //   response.data[response.data.length - 4][3],
+            // ]);
+          }
+        }
       });
 
       const data = {
@@ -200,7 +202,7 @@ export default function ChoosenStateView() {
               <Line
                 datasetIdKey="id"
                 data={{
-                  labels: [...date],
+                  labels: [...date, 14, 15],
                   datasets: [
                     {
                       id: 1,
@@ -212,6 +214,25 @@ export default function ChoosenStateView() {
                       fill: true,
                       pointRadius: 0.5,
                       lineTension: 0.5,
+                    },
+                    year === "2023" && {
+                      label:
+                        diseaseType[0].toUpperCase() +
+                        diseaseType.slice(1) +
+                        " Predictions",
+                      data: [
+                        ...futureDates,
+                        cases[cases.length - 1],
+                        cases[cases.length - 5],
+                        cases[cases.length - 3],
+                      ],
+
+                      fill: true,
+                      pointRadius: 0.5,
+                      lineTension: 0.7,
+                      backgroundColor: "rgb(25, 235, 132)",
+                      borderColor: "rgb(54, 16, 235)",
+                      order: 2,
                     },
                   ],
                 }}

@@ -88,23 +88,6 @@ export default function DiseaseApp() {
   ];
 
   useEffect(() => {
-    const data2 = {
-      query_data: {
-        table: "predict_data_nations",
-        disease: "covid",
-        week: null,
-        year: "2023",
-        state: null,
-      },
-      function: {
-        number: 3,
-      },
-    };
-
-    Axios.post(url, data2).then((response) => {
-      console.log(response.data);
-    });
-
     const data = {
       query_data: {
         table: "weekly_data",
