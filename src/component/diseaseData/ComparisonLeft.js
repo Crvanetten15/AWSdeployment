@@ -56,35 +56,6 @@ export default function ComparisonLeft() {
           }
         });
 
-      // weekly total
-      // diseaseType &&
-      //   serverStateName &&
-      //   year &&
-      //   Axios.get(
-      //     "http://localhost:3001/getTotalNonGrowing?diseaseType=" +
-      //       diseaseType +
-      //       "&choosenState=" +
-      //       serverStateName +
-      //       "&year=" +
-      //       year
-      //   ).then((response) => {
-      //     for (let j = 0; j < response.data.length; j++) {
-      //       if (response.data[j].state === serverStateName) {
-      //         setDate((prevData) => [...prevData, response.data[j].week + " "]);
-      //         // diseaseType === "Covid"
-      //         //   ? setDeaths((prevData) => [
-      //         //       ...prevData,
-      //         //       response.data[j].disease_deaths + " ",
-      //         //     ])
-      //         //   : setDeaths([]);
-      //         setCases((prevData) => [
-      //           ...prevData,
-      //           response.data[j].disease_cases + " ",
-      //         ]);
-      //       }
-      //     }
-      //   });
-
       diseaseType &&
         serverStateName &&
         year &&
@@ -109,40 +80,6 @@ export default function ComparisonLeft() {
             // }
           }
         });
-
-      //incrementing total
-      // diseaseType &&
-      //   serverStateName &&
-      //   year &&
-      //   Axios.get(
-      //     "http://localhost:3001/getIncrementingTotal?diseaseType=" +
-      //       diseaseType +
-      //       "&choosenState=" +
-      //       serverStateName +
-      //       "&year=" +
-      //       year
-      //   ).then((response) => {
-      //     setIncrementingCases([]);
-      //     setDate([]);
-      //     for (let j = 0; j < response.data.length; j++) {
-      //       if (response.data[j].state === serverStateName) {
-      //         setDate((prevData) => [...prevData, response.data[j].week + " "]);
-      //         // diseaseType === "Covid"
-      //         //   ? setDeaths((prevData) => [
-      //         //       ...prevData,
-      //         //       response.data[j].disease_deaths + " ",
-      //         //     ])
-      //         //   : setDeaths([]);
-      //         setIncrementingCases((prevData) => [
-      //           ...prevData,
-      //           prevData.length === 0
-      //             ? 0
-      //             : prevData[prevData.length - 1] +
-      //               response.data[j].disease_cases,
-      //         ]);
-      //       }
-      //     }
-      //   });
     } else setDropDownState(null);
   }, [diseaseType, dropDownState, compareStates, year]);
 
