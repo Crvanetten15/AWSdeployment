@@ -167,17 +167,17 @@ export default function ChoosenStateView() {
 
       Axios.post(url, data2).then((response) => {
         console.log(response.data);
-        setFutureDates([]);
+        setFutureDates([14,15]);
         for (let j = 0; j < 14; j++) {
           j > 1 && setFutureDates((prevData) => [...prevData, null + " "]);
         }
         for (let j = 0; j < response.data.length; j++) {
           if (serverStateName === response.data[j][2]) {
             //500 is too low to show up on charts
-            // setPredictions([
-            //   response.data[response.data.length - 1][3],
-            //   response.data[response.data.length - 4][3],
-            // ]);
+            setPredictions([
+              response.data[response.data.length - 1][3],
+              response.data[response.data.length - 4][3],
+            ]);
           }
         }
       });
