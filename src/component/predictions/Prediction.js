@@ -69,9 +69,9 @@ export default function Prediction() {
                     diseaseType.slice(1) +
                     " Cases",
                   data: [...cases],
-                  // fill: true,
+                  fill: true,
                   pointRadius: 0.7,
-                  // lineTension: 0.5,
+                  lineTension: 0.5,
                   backgroundColor: "rgb(255, 99, 132)",
                   borderColor: "rgb(154, 16, 235)",
                   order: 2,
@@ -116,9 +116,9 @@ export default function Prediction() {
                     diseaseType.slice(1) +
                     " Cases",
                   data: [...cases],
-                  // fill: true,
+                  fill: true,
                   pointRadius: 0.7,
-                  // lineTension: 0.5,
+                  lineTension: 0.5,
                   backgroundColor: "rgb(255, 99, 132)",
                   borderColor: "rgb(154, 16, 235)",
                   order: 2,
@@ -131,11 +131,11 @@ export default function Prediction() {
                   data: displayPredictions
                     ? [...futureDates, ...predictions]
                     : [...futureDates],
-                  // fill: true,
+                  fill: true,
                   pointRadius: 0.5,
-                  // lineTension: 0.7,
+                  lineTension: 0.7,
                   backgroundColor: "rgb(25, 235, 132)",
-                  borderColor: "rgb(25, 235, 132)",
+                  borderColor: "rgb(54, 16, 235)",
                   order: 2,
                 },
               ],

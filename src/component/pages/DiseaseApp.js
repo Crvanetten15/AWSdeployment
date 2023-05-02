@@ -88,6 +88,23 @@ export default function DiseaseApp() {
   ];
 
   useEffect(() => {
+    const data2 = {
+      query_data: {
+        table: "predict_data_nations",
+        disease: "covid",
+        week: null,
+        year: "2023",
+        state: null,
+      },
+      function: {
+        number: 3,
+      },
+    };
+
+    Axios.post(url, data2).then((response) => {
+      console.log(response.data);
+    });
+
     const data = {
       query_data: {
         table: "weekly_data",
@@ -102,7 +119,7 @@ export default function DiseaseApp() {
     };
 
     Axios.post(url, data).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       response.data.sort((a, b) => b.disease_cases - a.disease_cases);
       for (let j = 0; j < response.data.length; j++) {
         const stateData = response.data[j];
@@ -148,7 +165,7 @@ export default function DiseaseApp() {
     );
 
     //changing state colors
-    console.log(highestDiseaseCase);
+    // console.log(highestDiseaseCase);
     if (changeMapColor) {
       statesData.map((stateData) => {
         const state = states.find((stateElem) => stateElem.id === stateData[5]);

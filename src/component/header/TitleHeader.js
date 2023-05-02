@@ -114,7 +114,7 @@ export default function TitleHeader() {
             data-value="pneumococcal"
             onClick={handleDiseaseSelection}
           >
-            Pneumococcal Diseases
+            Pneumococcal Disease
           </a>
           <a
             className="virus"

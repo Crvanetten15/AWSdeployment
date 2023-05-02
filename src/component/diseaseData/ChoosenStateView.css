@@ -13,7 +13,7 @@ p{
     height: 26em;
     overflow-y: scroll;
     scroll-behavior: smooth;
-    width: 50vw;
+    width: 52vw;
 } 
 
 .data-section #left-display-state-data[scroll-value="false"] {
@@ -26,4 +26,14 @@ p{
     justify-content: space-around;
 }
 
+
+#bar-chart{
+    width: 30vw;
+    display: flex;
+}
+
+#bar-chart h2{
+    margin-top: 12vh;
+    margin-left: 2em;
+}
 
