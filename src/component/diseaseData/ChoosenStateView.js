@@ -83,7 +83,7 @@ export default function ChoosenStateView() {
     ["Wyoming", "WY"],
   ];
 
-  let population_division = 1
+  let population_division = 1;
   const population = {
     query_data: {
       table: "population_data",
@@ -97,9 +97,7 @@ export default function ChoosenStateView() {
     },
   };
   Axios.post(url, population).then((response) => {
-    for (let x = 0;x < response.data.length;x++) {
-
-    }
+    for (let x = 0; x < response.data.length; x++) {}
   });
 
   useEffect(() => {
@@ -107,80 +105,43 @@ export default function ChoosenStateView() {
 
     compareStates ? setChoosenState(null) : setChoosenState(choosenState);
 
-
     // if (response.data[x][0] === serverStateName) {
     //   let pup  = response.data[x][1]
     //   population_division = pup
     //   console.log(pup + " POPULATION")
     //   break;
     // }
-    riskNum === 20
-      ? setRiskColor("red")
-      : riskNum === 10
-      ? setRiskColor("orange")
-      : setRiskColor("yellow");
+    // riskNum === 20
+    //   ? setRiskColor("red")
+    //   : riskNum === 10
+    //   ? setRiskColor("orange")
+    //   : setRiskColor("yellow");
 
-    riskNum === 20
-      ? setRiskLevel("High")
-      : riskNum === 10
-      ? setRiskLevel("Medium")
-      : setRiskLevel("Low");    
+    // riskNum === 20
+    //   ? setRiskLevel("High")
+    //   : riskNum === 10
+    //   ? setRiskLevel("Medium")
+    //   : setRiskLevel("Low");
 
-      let populations;
-      const population = {
-        query_data: {
-          table: "population_data",
-          disease: null,
-          week: null,
-          year: null,
-          state: null,
-        },
-        function: {
-          number: 1,
-        },
-      };
-      Axios.post(url, population).then((response) => {
-          populations  = response.data
-          setpopulationArr(populations)
-      });
+    let populations;
+    const population = {
+      query_data: {
+        table: "population_data",
+        disease: null,
+        week: null,
+        year: null,
+        state: null,
+      },
+      function: {
+        number: 1,
+      },
+    };
+    Axios.post(url, population).then((response) => {
+      populations = response.data;
+      setpopulationArr(populations);
+    });
     if (choosenState) {
-      // diseaseType === "covid" ? setScroll("true") : setScroll("false");
-
-
-      
       serverStateName = states.find((state) => state[1] === choosenState.id)[0];
-      // setYear(null);
-      // setCases([]);
-
-      const data2 = {
-        query_data: {
-          table: "predict_data_states",
-          disease: "covid",
-          week: null,
-          year: "2023",
-          state: null,
-        },
-        function: {
-          number: 3,
-        },
-      };
-
-      Axios.post(url, data2).then((response) => {
-        console.log(response.data);
-        setFutureDates([14,15]);
-        for (let j = 0; j < 14; j++) {
-          j > 1 && setFutureDates((prevData) => [...prevData, null + " "]);
-        }
-        for (let j = 0; j < response.data.length; j++) {
-          if (serverStateName === response.data[j][2]) {
-            //500 is too low to show up on charts
-            setPredictions([
-              response.data[response.data.length - 1][3],
-              response.data[response.data.length - 4][3],
-            ]);
-          }
-        }
-      });
 
       const data = {
         query_data: {
@@ -201,21 +162,27 @@ export default function ChoosenStateView() {
           setDate([]);
           setDeaths([]);
           setCases([]);
-          let index = 0
-          for (let j = 0; j < populationArr.length; j++){
+          setFutureDates([]);
+          let index = 0;
+          for (let j = 0; j < populationArr.length; j++) {
             if (populationArr[j][0] === serverStateName) {
-                console.log(populationArr[j])
-                console.log(serverStateName)
-                index = j
+              console.log(populationArr[j]);
+              console.log(serverStateName);
+              index = j;
             }
           }
           console.log(response.data[response.data.length - 1][3] + "TOTAL");
-          let x = (response.data[response.data.length - 1][3] / populationArr[index][1]) * 100000
-          console.log(x + " RETURN ")
-          setRiskNum([x])
+          let x =
+            (response.data[response.data.length - 1][3] /
+              populationArr[index][1]) *
+            100000;
+          console.log(x + " RETURN ");
+          setRiskNum([x]);
 
           for (let j = 0; j < response.data.length; j++) {
             setDate((prevData) => [...prevData, response.data[j][2] + " "]);
+            j > 0 && setFutureDates((prevData) => [...prevData, null + " "]);
+
             diseaseType === "covid"
               ? setDeaths((prevData) => [
                   ...prevData,
@@ -227,23 +194,22 @@ export default function ChoosenStateView() {
           }
         });
     } else {
-      setYear(2023);
+      setYear("2023");
       setCases([]);
       setDate([]);
     }
   }, [choosenState, compareStates, diseaseType, year, changeMapColor]);
 
-
   useEffect(() => {
-    if (riskNum >= 20){
-      setRiskColor("red")
-      setRiskLevel("High")
+    if (riskNum >= 20) {
+      setRiskColor("red");
+      setRiskLevel("High");
     } else if (riskNum >= 10 && !(riskNum >= 20)) {
-      setRiskColor("orange")
-      setRiskLevel("Medium")
+      setRiskColor("orange");
+      setRiskLevel("Medium");
     } else {
-      setRiskColor("yellow")
-      setRiskLevel("Low")
+      setRiskColor("yellow");
+      setRiskLevel("Low");
     }
     // console.log('Data has changed:', riskNum);
   }, [riskNum]);
@@ -273,70 +239,124 @@ export default function ChoosenStateView() {
                 </select>
               </div>
             </div>
+            {console.log(year)}
             <div id="left-display-state-data" scroll-value={scroll}>
-              <Line
-                datasetIdKey="id"
-                data={{
-                  labels: [...date, 14, 15],
-                  datasets: [
-                    {
-                      id: 1,
-                      label:
-                        diseaseType[0].toUpperCase() +
-                        diseaseType.slice(1) +
-                        " Cases",
-                      data: [...cases],
-                      fill: true,
-                      pointRadius: 0.5,
-                      lineTension: 0.5,
-                    },
-                    year === "2023" && {
-                      label:
-                        diseaseType[0].toUpperCase() +
-                        diseaseType.slice(1) +
-                        " Predictions",
-                      data: [
-                        ...futureDates,
-                        cases[cases.length - 1],
-                        cases[cases.length - 5],
-                        cases[cases.length - 3],
-                      ],
-
-                      fill: true,
-                      pointRadius: 0.5,
-                      lineTension: 0.7,
-                      backgroundColor: "rgb(25, 235, 132)",
-                      borderColor: "rgb(54, 16, 235)",
-                      order: 2,
-                    },
-                  ],
-                }}
-                options={{
-                  scales: {
-                    x: {
-                      title: {
-                        display: true,
-                        text: "Week",
+              {year !== "2023" && (
+                <Line
+                  datasetIdKey="id"
+                  data={{
+                    labels: [...date],
+                    datasets: [
+                      {
+                        id: 1,
+                        label:
+                          diseaseType[0].toUpperCase() +
+                          diseaseType.slice(1) +
+                          " Cases",
+                        data: [...cases],
+                        fill: true,
+                        pointRadius: 0.5,
+                        lineTension: 0.5,
+                        backgroundColor: "rgb(173, 216, 230)",
+                        borderColor: "rgb(54, 16, 235)",
                       },
-                    },
-                    y: {
-                      title: {
-                        display: true,
-                        text: "Cases",
+                    ],
+                  }}
+                  options={{
+                    scales: {
+                      x: {
+                        title: {
+                          display: true,
+                          text: "Week",
+                        },
                       },
-                    },
-                  },
-                  plugins: {
-                    legend: {
-                      labels: {
-                        font: {
-                          size: 17,
+                      y: {
+                        title: {
+                          display: true,
+                          text: "Cases",
                         },
                       },
                     },
-                  },
-                }}
-              />
+                    plugins: {
+                      legend: {
+                        labels: {
+                          font: {
+                            size: 17,
+                          },
+                        },
+                      },
+                    },
+                  }}
+                />
+              )}
+              {console.log(...futureDates)}
+              {year === "2023" && (
+                <Line
+                  datasetIdKey="id"
+                  data={{
+                    labels: [...date, 14, 15],
+                    datasets: [
+                      {
+                        id: 1,
+                        label:
+                          diseaseType[0].toUpperCase() +
+                          diseaseType.slice(1) +
+                          " Cases",
+                        data: [...cases],
+                        fill: true,
+                        pointRadius: 0.5,
+                        lineTension: 0.5,
+                        backgroundColor: "rgb(173, 216, 230)",
+                        borderColor: "rgb(54, 16, 235)",
+                      },
+                      {
+                        label:
+                          diseaseType[0].toUpperCase() +
+                          diseaseType.slice(1) +
+                          " Predictions",
+                        data: [
+                          ...futureDates,
+                          cases[cases.length - 1],
+                          cases[cases.length - 5],
+                          cases[cases.length - 3],
+                        ],
+
+                        fill: true,
+                        pointRadius: 0.5,
+                        lineTension: 0.7,
+                        backgroundColor: "rgb(25, 235, 132)",
+                        borderColor: "rgb(54, 16, 235)",
+                        order: 2,
+                      },
+                    ],
+                  }}
+                  options={{
+                    scales: {
+                      x: {
+                        title: {
+                          display: true,
+                          text: "Week",
+                        },
+                      },
+                      y: {
+                        title: {
+                          display: true,
+                          text: "Cases",
+                        },
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        labels: {
+                          font: {
+                            size: 17,
+                          },
+                        },
+                      },
+                    },
+                  }}
+                />
+              )}
               {diseaseType === "covid" && (
                 <Line
                   datasetIdKey="id"
