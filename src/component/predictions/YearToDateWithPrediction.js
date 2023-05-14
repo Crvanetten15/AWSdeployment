@@ -129,7 +129,7 @@ export default function YearToDateWithPrediction() {
         {displayPredictions && (
           <Line
             data={{
-              labels: [...date, 14, 15, 16],
+              labels: [...date, 14, 15, 16, 17],
               datasets: [
                 {
                   label:
@@ -150,7 +150,7 @@ export default function YearToDateWithPrediction() {
                     diseaseType.slice(1) +
                     " Predictions",
                   data: displayPredictions
-                    ? [...futureDates, ...predictions]
+                    ? [...futureDates, cases[cases.length - 1], ...predictions]
                     : [...futureDates],
                   fill: true,
                   pointRadius: 0.5,

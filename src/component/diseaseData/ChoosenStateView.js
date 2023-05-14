@@ -302,7 +302,7 @@ export default function ChoosenStateView() {
                 <Line
                   datasetIdKey="id"
                   data={{
-                    labels: [...date, 14, 15, 16],
+                    labels: [...date, 14, 15, 16, 17],
                     datasets: [
                       {
                         id: 1,
@@ -322,7 +322,11 @@ export default function ChoosenStateView() {
                           diseaseType[0].toUpperCase() +
                           diseaseType.slice(1) +
                           " Predictions",
-                        data: [...futureDates, ...predictions],
+                        data: [
+                          ...futureDates,
+                          cases[cases.length - 1],
+                          ...predictions,
+                        ],
 
                         fill: true,
                         pointRadius: 0.5,
