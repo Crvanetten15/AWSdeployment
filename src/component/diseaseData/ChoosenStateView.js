@@ -105,24 +105,6 @@ export default function ChoosenStateView() {
 
     compareStates ? setChoosenState(null) : setChoosenState(choosenState);
 
-    // if (response.data[x][0] === serverStateName) {
-    //   let pup  = response.data[x][1]
-    //   population_division = pup
-    //   console.log(pup + " POPULATION")
-    //   break;
-    // }
-    // riskNum === 20
-    //   ? setRiskColor("red")
-    //   : riskNum === 10
-    //   ? setRiskColor("orange")
-    //   : setRiskColor("yellow");
-
-    // riskNum === 20
-    //   ? setRiskLevel("High")
-    //   : riskNum === 10
-    //   ? setRiskLevel("Medium")
-    //   : setRiskLevel("Low");
-
     let populations;
     const population = {
       query_data: {
@@ -142,6 +124,27 @@ export default function ChoosenStateView() {
     });
     if (choosenState) {
       serverStateName = states.find((state) => state[1] === choosenState.id)[0];
+
+      const predictionData = {
+        query_data: {
+          table: "prediction_weekly_data",
+          disease: diseaseType,
+          week: null,
+          year: "2023",
+          state: serverStateName,
+        },
+        function: {
+          number: 4,
+        },
+      };
+
+      Axios.post(url, predictionData).then((response) => {
+        console.log(response.data);
+
+        for (let j = 0; j < response.data.length; j++) {
+          setPredictions((prevData) => [...prevData, response.data[j][3]]);
+        }
+      });
 
       const data = {
         query_data: {
@@ -166,17 +169,17 @@ export default function ChoosenStateView() {
           let index = 0;
           for (let j = 0; j < populationArr.length; j++) {
             if (populationArr[j][0] === serverStateName) {
-              console.log(populationArr[j]);
-              console.log(serverStateName);
+              // console.log(populationArr[j]);
+              // console.log(serverStateName);
               index = j;
             }
           }
-          console.log(response.data[response.data.length - 1][3] + "TOTAL");
+          // console.log(response.data[response.data.length - 1][3] + "TOTAL");
           let x =
             (response.data[response.data.length - 1][3] /
               populationArr[index][1]) *
             100000;
-          console.log(x + " RETURN ");
+          // console.log(x + " RETURN ");
           setRiskNum([x]);
 
           for (let j = 0; j < response.data.length; j++) {
@@ -197,6 +200,7 @@ export default function ChoosenStateView() {
       setYear("2023");
       setCases([]);
       setDate([]);
+      setPredictions([]);
     }
   }, [choosenState, compareStates, diseaseType, year, changeMapColor]);
 
@@ -239,7 +243,7 @@ export default function ChoosenStateView() {
                 </select>
               </div>
             </div>
-            {console.log(year)}
+            {/* {console.log(year)} */}
             <div id="left-display-state-data" scroll-value={scroll}>
               {year !== "2023" && (
                 <Line
@@ -289,12 +293,12 @@ export default function ChoosenStateView() {
                   }}
                 />
               )}
-              {console.log(...futureDates)}
+              {/* {console.log(...futureDates)} */}
               {year === "2023" && (
                 <Line
                   datasetIdKey="id"
                   data={{
-                    labels: [...date, 14, 15],
+                    labels: [...date, 14, 15, 16, 17],
                     datasets: [
                       {
                         id: 1,
@@ -314,12 +318,7 @@ export default function ChoosenStateView() {
                           diseaseType[0].toUpperCase() +
                           diseaseType.slice(1) +
                           " Predictions",
-                        data: [
-                          ...futureDates,
-                          cases[cases.length - 1],
-                          cases[cases.length - 5],
-                          cases[cases.length - 3],
-                        ],
+                        data: [...futureDates, ...predictions],
 
                         fill: true,
                         pointRadius: 0.5,

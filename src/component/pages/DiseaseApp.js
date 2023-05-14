@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import ChoosenStateView from "../diseaseData/ChoosenStateView";
 import Team from "../team/Team";
 import Nation from "../rank/Nation";
-import Prediction from "../predictions/Prediction";
+import YearToDateWithPrediction from "../predictions/YearToDateWithPrediction";
 import Axios from "axios";
 import * as d3 from "d3";
 import StateRanking from "../rank/StateRanking";
@@ -102,7 +102,6 @@ export default function DiseaseApp() {
     };
 
     Axios.post(url, data).then((response) => {
-      // console.log(response.data);
       response.data.sort((a, b) => b.disease_cases - a.disease_cases);
       for (let j = 0; j < response.data.length; j++) {
         const stateData = response.data[j];
@@ -113,22 +112,6 @@ export default function DiseaseApp() {
         setHighestDiseaseCase(response.data[0][3]);
       }
     });
-
-    //   Axios.get(
-    //     "http://localhost:3001/getMapColorCode?diseaseType=" + diseaseType
-    //   ).then((response) => {
-    //     response.data.sort((a, b) => b.disease_cases - a.disease_cases);
-    //     for (let j = 0; j < response.data.length; j++) {
-    //       const stateData = response.data[j];
-    //       stateData.state = statesAbbre.find(
-    //         (pair) => pair[0] === stateData.state
-    //       )
-    //         ? statesAbbre.find((pair) => pair[0] === stateData.state)[1]
-    //         : null;
-    //       setStatesData((prevData) => [...prevData, stateData]);
-    //       setHighestDiseaseCase(response.data[0].disease_cases);
-    //     }
-    //   });
   }, [diseaseType]);
 
   const ChoosenStatePicker = (currState) => {
@@ -253,7 +236,7 @@ export default function DiseaseApp() {
           )}
         </div>
       </div>
-      <Prediction />
+      <YearToDateWithPrediction />
       <Team />
     </AppContext.Provider>
   );

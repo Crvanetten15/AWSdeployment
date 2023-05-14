@@ -32,7 +32,8 @@ export default function Team() {
             For more information on the data used on this webpage, please visit
             the <a href="https://www.who.int/"> WHO </a> and
             <a href="https://covid.cdc.gov/covid-data-tracker/#datatracker-home">
-               CDC 
+              {" "}
+              CDC{" "}
             </a>
             websites.
           </p>

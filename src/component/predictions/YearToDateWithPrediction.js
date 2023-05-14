@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
-import "./Prediction.css";
+import "./YearToDateWithPrediction.css";
 import { AppContext } from "../pages/DiseaseApp";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
 import Axios from "axios";
 const url = "https://gfn1a5n8m7.execute-api.us-east-2.amazonaws.com/example";
 
-export default function Prediction() {
+export default function YearToDateWithPrediction() {
   const { diseaseType } = useContext(AppContext);
   const [date, setDate] = useState([]);
   const [cases, setCases] = useState([]);
@@ -17,8 +17,8 @@ export default function Prediction() {
   useEffect(() => {
     const data2 = {
       query_data: {
-        table: "predict_data_nations",
-        disease: "covid",
+        table: "prediction_weekly_totals",
+        disease: diseaseType,
         week: null,
         year: "2023",
         state: null,
@@ -30,6 +30,10 @@ export default function Prediction() {
 
     Axios.post(url, data2).then((response) => {
       console.log(response.data);
+
+      for (let j = 0; j < response.data.length; j++) {
+        setPredictions((prevData) => [...prevData, response.data[j][3]]);
+      }
     });
 
     const data = {
@@ -47,7 +51,6 @@ export default function Prediction() {
 
     diseaseType &&
       Axios.post(url, data).then((response) => {
-        // console.log(response.data);
         setDate([]);
         setCases([]);
         setFutureDates([]);
@@ -56,13 +59,13 @@ export default function Prediction() {
           setCases((prevData) => [...prevData, response.data[j][3] + " "]);
           j > 0 && setFutureDates((prevData) => [...prevData, null + " "]);
         }
-        setPredictions([
-          response.data[response.data.length - 1][3],
-          response.data[response.data.length - 5][3],
-          response.data[response.data.length - 7][3],
-          response.data[response.data.length - 3][3],
-          response.data[response.data.length - 2][3],
-        ]);
+        // setPredictions([
+        //   response.data[response.data.length - 1][3],
+        //   response.data[response.data.length - 5][3],
+        //   response.data[response.data.length - 7][3],
+        //   response.data[response.data.length - 3][3],
+        //   response.data[response.data.length - 2][3],
+        // ]);
       });
   }, [diseaseType]);
 
