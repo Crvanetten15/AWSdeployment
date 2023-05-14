@@ -15,7 +15,8 @@ export default function YearToDateWithPrediction() {
   const [displayPredictions, setDisplayPredictions] = useState(false);
 
   useEffect(() => {
-    const data2 = {
+    setPredictions([]);
+    const predictionData = {
       query_data: {
         table: "prediction_weekly_totals",
         disease: diseaseType,
@@ -28,7 +29,7 @@ export default function YearToDateWithPrediction() {
       },
     };
 
-    Axios.post(url, data2).then((response) => {
+    Axios.post(url, predictionData).then((response) => {
       console.log(response.data);
 
       for (let j = 0; j < response.data.length; j++) {
@@ -128,7 +129,7 @@ export default function YearToDateWithPrediction() {
         {displayPredictions && (
           <Line
             data={{
-              labels: [...date, 14, 15, 16, 17],
+              labels: [...date, 14, 15, 16],
               datasets: [
                 {
                   label:

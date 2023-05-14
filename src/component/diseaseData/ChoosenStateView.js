@@ -101,6 +101,10 @@ export default function ChoosenStateView() {
   });
 
   useEffect(() => {
+    setPredictions([]);
+    setCases([]);
+    setDeaths([]);
+
     let serverStateName;
 
     compareStates ? setChoosenState(null) : setChoosenState(choosenState);
@@ -298,7 +302,7 @@ export default function ChoosenStateView() {
                 <Line
                   datasetIdKey="id"
                   data={{
-                    labels: [...date, 14, 15, 16, 17],
+                    labels: [...date, 14, 15, 16],
                     datasets: [
                       {
                         id: 1,
