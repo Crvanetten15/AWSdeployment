@@ -1,3 +1,5 @@
+![](./FInalPoster.pdf)
+
 Check out Current Deployment at : 
 [AWS AMPLIFY LINK](https://main.d1whdzdpw64965.amplifyapp.com/)
 
